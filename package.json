@@ -1,0 +1,12 @@
+{
+  "name": "main-project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "alisson <alissoneatena1@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.4.2",
+    "git-commit-msg-linter": "^5.0.4",
+    "typescript": "^5.1.6"
+  }
+}

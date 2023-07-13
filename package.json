@@ -9,7 +9,10 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts}": "eslint --fix"
+    "*.{js,ts}": [
+      "eslint 'src/**' --fix",
+      "git add"
+    ]
   },
   "devDependencies": {
     "@types/node": "^20.4.2",

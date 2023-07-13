@@ -5,8 +5,11 @@
   "author": "alisson <alissoneatena1@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "eslint": "eslint"
+    "eslint": "eslint",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --fix"
   },
   "devDependencies": {
     "@types/node": "^20.4.2",
@@ -17,6 +20,7 @@
     "eslint-plugin-n": "^16.0.1",
     "eslint-plugin-promise": "^6.1.1",
     "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "typescript": "^5.1.6"
   }
 }

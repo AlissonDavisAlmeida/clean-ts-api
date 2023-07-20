@@ -7,5 +7,9 @@
         "esModuleInterop": true,
         "allowJs": true,
         "strict": true,
-    }
+    },
+    "exclude": [
+        "node_modules",
+        "./jest.config.ts"
+    ]
 }

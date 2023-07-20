@@ -7,7 +7,7 @@
   "scripts": {
     "eslint": "eslint",
     "precommit": "lint-staged",
-    "test:staged": "jest",
+    "test:staged": "jest --passWithNoTests",
     "test": "jest",
     "test:watch": "jest --watchAll"
   },

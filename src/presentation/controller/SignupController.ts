@@ -3,18 +3,13 @@ import { badRequest } from '../helpers/httpHelper';
 import { type HttpRequest, type HttpResponse } from '../protocols/http';
 
 export class SignupController {
-  handle (httpRequest: HttpRequest): HttpResponse {
-    if (!httpRequest.body.email) {
-      return badRequest(new MissingParamError('email'));
-    }
+  handle (httpRequest: HttpRequest): HttpResponse | undefined {
+    const requiredFields = ['email', 'name', 'password', 'passwordConfirmation'];
 
-    if (!httpRequest.body.name) {
-      return badRequest(new MissingParamError('name'));
+    for (const field of requiredFields) {
+      if (!httpRequest.body[field]) {
+        return badRequest(new MissingParamError(field));
+      }
     }
-
-    return {
-      statusCode: 200,
-      body: 'ok'
-    };
   }
 }

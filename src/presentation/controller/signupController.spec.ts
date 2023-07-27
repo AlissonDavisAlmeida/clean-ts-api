@@ -87,7 +87,7 @@ describe('Signup Controller', () => {
     const httpRequest = {
       body: {
         name: 'any_name',
-        email: 'invalid_email@mail.com',
+        email: 'invalid_email',
         password: 'any_password',
         passwordConfirmation: 'any_password'
       }
@@ -97,5 +97,22 @@ describe('Signup Controller', () => {
     expect(emailValidatorStub.isValid).toHaveBeenCalledTimes(1);
     expect(httpResponse?.statusCode).toBe(400);
     expect(httpResponse?.body).toEqual(new InvalidParamError('email'));
+  });
+  test('should call EmailValidator with correct email', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const isValidMethodSpy = jest.spyOn(emailValidatorStub, 'isValid');
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'email@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    };
+    sut.handle(httpRequest);
+
+    expect(isValidMethodSpy).toHaveBeenCalledWith(httpRequest.body.email);
+    expect(emailValidatorStub.isValid).toHaveBeenCalledTimes(1);
   });
 });

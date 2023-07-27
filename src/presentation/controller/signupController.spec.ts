@@ -1,3 +1,5 @@
+import { type AccountModel } from '../../domain/models/AccountModel';
+import { type AddAccountModel, type AddAccount } from '../../domain/useCases/addAccount';
 import { InvalidParamError, MissingParamError, ServerError } from '../errors';
 import { type EmailValidator } from '../protocols/emailValidator';
 import { SignupController } from './SignupController';
@@ -5,6 +7,7 @@ import { SignupController } from './SignupController';
 interface SutTypes {
   sut: SignupController
   emailValidatorStub: EmailValidator
+  addAccountStub: AddAccount
 }
 
 const makeEmailValidator = (): EmailValidator => {
@@ -17,13 +20,32 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
+const makeAddAccount = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    add (account: AddAccountModel): AccountModel {
+      const fakeAccount = {
+        id: 'valid_id',
+        name: 'valid_name',
+        email: 'valid_email@gmail.com',
+        password: 'valid_password'
+      };
+
+      return fakeAccount;
+    }
+  }
+
+  return new AddAccountStub();
+};
+
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator();
-  const sut = new SignupController(emailValidatorStub);
+  const addAccountStub = makeAddAccount();
+  const sut = new SignupController(emailValidatorStub, addAccountStub);
 
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    addAccountStub
   };
 };
 
@@ -154,5 +176,26 @@ describe('Signup Controller', () => {
 
     expect(httpResponse?.statusCode).toBe(400);
     expect(httpResponse?.body).toEqual(new InvalidParamError('passwordConfirmation'));
+  });
+
+  test('should call AddAccount with correct values', async () => {
+    const { sut, addAccountStub } = makeSut();
+    const addSpy = jest.spyOn(addAccountStub, 'add');
+
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any@mail.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password'
+      }
+    };
+    sut.handle(httpRequest);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: httpRequest.body.name,
+      email: httpRequest.body.email,
+      password: httpRequest.body.password
+    });
   });
 });

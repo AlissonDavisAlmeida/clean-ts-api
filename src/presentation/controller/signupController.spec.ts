@@ -138,4 +138,21 @@ describe('Signup Controller', () => {
     expect(httpResponse?.statusCode).toBe(500);
     expect(httpResponse?.body).toEqual(new ServerError());
   });
+
+  test('should return 400 if password confirmation fails', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any@gmail.com',
+        password: 'any_password',
+        passwordConfirmation: 'invalid_password'
+      }
+    };
+
+    const httpResponse = sut.handle(httpRequest);
+
+    expect(httpResponse?.statusCode).toBe(400);
+    expect(httpResponse?.body).toEqual(new InvalidParamError('passwordConfirmation'));
+  });
 });

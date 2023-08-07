@@ -14,5 +14,5 @@ const config: Config = {
     '^.+\\.ts$': 'ts-jest'
   }
 };
-
+ 
 export default config;

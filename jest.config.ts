@@ -6,7 +6,7 @@ const config: Config = {
     '<rootDir>/src'
   ],
   collectCoverageFrom: [
-    '<rootDir>/src/**/*.ts'
+    '<rootDir>/src/**/*.ts' 
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',

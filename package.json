@@ -7,9 +7,12 @@
   "scripts": {
     "eslint": "eslint",
     "precommit": "lint-staged",
-    "test:staged": "jest --passWithNoTests",
-    "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --passWithNoTests",
+    "test:staged": "yarn test --findRelatedTests",
+    "test:ci": "yarn test --coverage",
+    "test:unit": "yarn test --watchAll -c jest-unit.config.ts",
+    "test:integration": "yarn test --watchAll -c jest-integration.config.ts"
   },
   "lint-staged": {
     "*.{js,ts}": [

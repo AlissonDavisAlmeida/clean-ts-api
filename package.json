@@ -21,6 +21,7 @@
     ]
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.4.2",
     "@types/validator": "^13.11.1",
@@ -38,6 +39,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "validator": "^13.11.0"
   }
 }

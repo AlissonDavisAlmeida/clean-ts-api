@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, type WithId } from 'mongodb';
 
 export const mongoHelper = {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
@@ -14,7 +14,7 @@ export const mongoHelper = {
     return this.client.db().collection(name);
   },
 
-  map (collection: any): any {
+  map<T>(collection: WithId<any>): T {
     const { _id, ...collectionWithoutId } = collection;
     return Object.assign({}, collectionWithoutId, { id: _id });
   }

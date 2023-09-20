@@ -18,6 +18,6 @@ export class AccountMongoRepository implements AddAccountRepository {
       throw new Error('Error on find inserted account');
     }
 
-    return mongoHelper.map(account);
+    return mongoHelper.map<AccountModel>(account);
   }
 }

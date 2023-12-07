@@ -12,8 +12,8 @@ describe('Signup routes', () => {
   });
 
   beforeEach(async () => {
-    const accountCollection = mongoHelper.getCollection('accounts');
-    await accountCollection.deleteMany({});
+    const accountCollection = await mongoHelper.getCollection('accounts');
+    await accountCollection?.deleteMany({});
   });
   test('should return an account on success', async () => {
     await request(app)

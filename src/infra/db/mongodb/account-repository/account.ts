@@ -5,14 +5,14 @@ import { mongoHelper } from '../helpers/mongo-helper';
 
 export class AccountMongoRepository implements AddAccountRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
-    const accountCollection = mongoHelper.getCollection('accounts');
-    const result = await accountCollection.insertOne(accountData);
+    const accountCollection = await mongoHelper.getCollection('accounts');
+    const result = await accountCollection?.insertOne(accountData);
 
-    if (!result.acknowledged) {
+    if (!result?.acknowledged) {
       throw new Error('Error on insert new account');
     }
 
-    const account = await accountCollection.findOne({ _id: result.insertedId });
+    const account = await accountCollection?.findOne({ _id: result.insertedId });
 
     if (!account) {
       throw new Error('Error on find inserted account');

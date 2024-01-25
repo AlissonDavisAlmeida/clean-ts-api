@@ -3,14 +3,18 @@ import { serverError } from '../../presentation/helpers/httpHelper';
 import { type HttpResponse, type Controller, type HttpRequest } from '../../presentation/protocols';
 import { LogControllerDecorator } from './log';
 
+const makeFakeRequest = (): HttpRequest => ({
+  body: {
+    name: 'any_name',
+    email: 'valid@mail.com',
+    password: 'any_password',
+    passwordConfirmation: 'any_password'
+  }
+});
+
 const httpResponseStub: HttpResponse = {
   statusCode: 200,
-  body: {
-    name: 'valid_name',
-    email: 'valid_email',
-    password: 'valid_password',
-    passwordConfirmation: 'valid_password'
-  }
+  body: makeFakeRequest().body
 };
 
 class ControllerStub implements Controller {
@@ -52,14 +56,7 @@ describe('Log Decorator', () => {
 
     const handleSpy = jest.spyOn(stubController, 'handle');
 
-    const httpRequest: HttpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'an@any_email.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-    };
+    const httpRequest: HttpRequest = makeFakeRequest();
     await sut.handle(httpRequest);
 
     expect(handleSpy).toHaveBeenCalledWith(httpRequest);
@@ -68,14 +65,7 @@ describe('Log Decorator', () => {
   test('should return the same result of the controller', async () => {
     const { sut } = makeSut();
 
-    const httpRequest: HttpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'an@any_email.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-    };
+    const httpRequest: HttpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(httpResponseStub);
@@ -85,18 +75,12 @@ describe('Log Decorator', () => {
     const fakeError = new Error();
     fakeError.stack = 'any_stack';
     const error = serverError(fakeError);
+
     const logSpy = jest.spyOn(logErrorRepositoryStub, 'log');
 
     jest.spyOn(stubController, 'handle').mockReturnValueOnce(new Promise(resolve => { resolve(error); }));
 
-    const httpRequest: HttpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'an@any_email.com',
-        password: 'any_password',
-        passwordConfirmation: 'any_password'
-      }
-    };
+    const httpRequest: HttpRequest = makeFakeRequest();
     await sut.handle(httpRequest);
 
     expect(logSpy).toHaveBeenCalledWith(fakeError.stack);

@@ -1,5 +1,5 @@
 import { EmailValidatorAdapter } from '../../../utils/email-validator-adapter';
-import { MissingParamError } from '../../errors';
+import { InvalidParamError, MissingParamError } from '../../errors';
 import { badRequest } from '../../helpers/httpHelper';
 import { type HttpRequest } from '../../protocols';
 import { LoginController } from './loginController';
@@ -45,7 +45,19 @@ describe('Login Controller', () => {
 
     expect(httpResponse).toStrictEqual(badRequest(new MissingParamError('password')));
   });
+  test('should returns 400 status if email is invalid', async () => {
+    const { sut } = makeSut();
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'email_invalid_mail.com',
+        password: 'any_password'
+      }
+    };
 
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toStrictEqual(badRequest(new InvalidParamError('email')));
+  });
   test('should calls EmailValidator with correct email', async () => {
     const { sut, emailValidator } = makeSut();
     const httpRequest: HttpRequest = {

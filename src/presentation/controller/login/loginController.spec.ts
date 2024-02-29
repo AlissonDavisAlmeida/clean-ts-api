@@ -1,7 +1,7 @@
 import { type Authentication, type AuthenticationParams } from '../../../domain/useCases/authentication';
 import { EmailValidatorAdapter } from '../../../utils/email-validator-adapter';
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors';
-import { badRequest, serverError } from '../../helpers/httpHelper';
+import { badRequest, serverError, unauthorized } from '../../helpers/httpHelper';
 import { type HttpRequest } from '../../protocols';
 import { LoginController } from './loginController';
 
@@ -118,5 +118,14 @@ describe('Login Controller', () => {
       email: httpRequest.body?.email,
       password: httpRequest.body?.password
     });
+  });
+  test('should returns 401 if invalid credentials are provided', async () => {
+    const { sut, authenticationStub } = makeSut();
+
+    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => { resolve(''); }));
+
+    const httpResult = await sut.handle(httpRequest);
+
+    expect(httpResult).toEqual(unauthorized());
   });
 });

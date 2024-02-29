@@ -1,7 +1,7 @@
 import { type Authentication, type AuthenticationParams } from '../../../domain/useCases/authentication';
 import { EmailValidatorAdapter } from '../../../utils/email-validator-adapter';
 import { InvalidParamError, MissingParamError, ServerError } from '../../errors';
-import { badRequest, serverError, unauthorized } from '../../helpers/httpHelper';
+import { badRequest, ok, serverError, unauthorized } from '../../helpers/httpHelper';
 import { type HttpRequest } from '../../protocols';
 import { LoginController } from './loginController';
 
@@ -139,5 +139,13 @@ describe('Login Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(serverError(new ServerError('any_stack')));
+  });
+
+  test('should returns a token and status 200 after authentication credentials', async () => {
+    const { sut } = makeSut();
+
+    const httpResult = await sut.handle(httpRequest);
+
+    expect(httpResult).toStrictEqual(ok({ accessToken: 'any_token' }));
   });
 });

@@ -20,6 +20,10 @@ export class SignupController implements Controller {
     try {
       const error = this.validation.validate(httpRequest.body);
 
+      if (error) {
+        return badRequest(error);
+      }
+
       const requiredFields = ['email', 'name', 'password', 'passwordConfirmation'];
 
       for (const field of requiredFields) {

@@ -1,4 +1,4 @@
-import { InvalidParamError, MissingParamError } from '../../errors';
+import { InvalidParamError } from '../../errors';
 import { badRequest, ok, serverError } from '../../helpers/httpHelper';
 import {
   type EmailValidator,

@@ -1,6 +1,6 @@
 import { RequiredFieldsValidation } from '../../../presentation/helpers/validators/required-fields-validation';
 import { ValidationComposite } from '../../../presentation/helpers/validators/validation-composite';
-import { makeSignupValidatorFactory } from '../signup-validator-factory';
+import { makeSignupValidatorFactory } from '../signup/signup-validator-factory';
 
 jest.mock('../../../presentation/helpers/validators/validation-composite');
 describe('SignupValidator Factory', () => {

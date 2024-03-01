@@ -1,5 +1,5 @@
-import { RequiredFieldsValidation, ValidationComposite } from '../../presentation/helpers/validators';
-import { type Validation } from '../../presentation/protocols/validation';
+import { RequiredFieldsValidation, ValidationComposite } from '../../../presentation/helpers/validators';
+import { type Validation } from '../../../presentation/protocols/validation';
 
 export const makeSignupValidatorFactory = (): Validation => {
   const requiredFieldsValidation = new RequiredFieldsValidation(['name', 'email', 'password', 'passwordConfirmation']);

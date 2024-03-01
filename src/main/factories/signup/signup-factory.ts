@@ -1,11 +1,11 @@
-import { DbAddAccount } from '../../data/usecases/add-account/db-add-account';
-import { BcryptAdapter } from '../../infra/criptography/bcrypt-adapter';
-import { AccountMongoRepository } from '../../infra/db/mongodb/account-repository/account';
-import { LogMongoRepository } from '../../infra/db/mongodb/log-repository/log-repository';
-import { SignupController } from '../../presentation/controller/signup/SignupController';
-import { type Controller } from '../../presentation/protocols';
-import { EmailValidatorAdapter } from '../../utils/email-validator-adapter';
-import { LogControllerDecorator } from '../decorators/log';
+import { DbAddAccount } from '../../../data/usecases/add-account/db-add-account';
+import { BcryptAdapter } from '../../../infra/criptography/bcrypt-adapter';
+import { AccountMongoRepository } from '../../../infra/db/mongodb/account-repository/account';
+import { LogMongoRepository } from '../../../infra/db/mongodb/log-repository/log-repository';
+import { SignupController } from '../../../presentation/controller/signup/SignupController';
+import { type Controller } from '../../../presentation/protocols';
+import { EmailValidatorAdapter } from '../../../utils/email-validator-adapter';
+import { LogControllerDecorator } from '../../decorators/log';
 import { makeSignupValidatorFactory } from './signup-validator-factory';
 
 export const makeSignupController = (): Controller => {

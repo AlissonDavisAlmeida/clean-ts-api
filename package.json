@@ -12,7 +12,7 @@
     "test:verbose": "jest --passWithNoTests",
     "test:staged": "yarn test --findRelatedTests",
     "test:ci": "yarn test --coverage",
-    "test:unit": "yarn test --watchAll -c jest-unit.config.ts",
+    "test:unit": "yarn test:verbose --watchAll -c jest-unit.config.ts",
     "test:integration": "yarn test --watchAll -c jest-integration.config.ts"
   },
   "lint-staged": {

@@ -15,6 +15,6 @@ describe('RequiredFieldsValidation', () => {
 
     const error = sut.validate({ field: 'any_value' });
 
-    expect(error).toBeFalsy();
+    expect(error).toBeNull();
   });
 });

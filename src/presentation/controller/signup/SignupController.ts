@@ -1,4 +1,3 @@
-import { InvalidParamError } from '../../errors';
 import { badRequest, ok, serverError } from '../../helpers/httpHelper';
 import {
   type Controller,

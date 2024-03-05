@@ -50,4 +50,11 @@ describe('Validation Composite', () => {
 
     expect(error).toEqual(new InvalidParamError('field'));
   });
+
+  test('should not return if validation succeeds', () => {
+    const { sut } = makeSut();
+    const error = sut.validate({ field: 'any_value' });
+
+    expect(error).toBeNull();
+  });
 });

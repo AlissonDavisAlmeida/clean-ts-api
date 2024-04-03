@@ -191,4 +191,13 @@ describe('DbAuthentication UseCase', () => {
       accessToken: 'any_token'
     });
   });
+
+  test(`should throws an error if ${CONSTANTS.UpdateAccessTokenRepository} throw an error`, async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut();
+
+    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()); }));
+    const promise = sut.auth(makeFakeAuthenticationParams());
+
+    await expect(promise).rejects.toThrow();
+  });
 });

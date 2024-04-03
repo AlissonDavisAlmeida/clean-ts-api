@@ -1,10 +1,14 @@
-import { type LoadAccountByEmailRepository } from '@/@data/protocols/db/loadAccountByEmail.repository';
+import {
+  type HashComparer,
+  type HashComparerParams,
+  type LoadAccountByEmailRepository,
+  type TokenGenerator,
+  type UpdateAccessTokenRepository,
+  type UpdateAccessTokenRepositoryParams
+} from './db-authentication-protocols';
 import { type AccountModel } from '@/@data/usecases/add-account/db-add-account-protocols';
 import { type AuthenticationParams } from '@/@domain/useCases/authentication';
 import { DbAuthentication } from './db-authentication';
-import { type HashComparer, type HashComparerParams } from '@/@data/protocols/criptography/hashComparer';
-import { type TokenGenerator } from '@/@data/protocols/criptography/tokenGenerator';
-import { type UpdateAccessTokenRepository, type UpdateAccessTokenRepositoryParams } from '@/@data/protocols/db/update-accessToken-repository';
 
 const CONSTANTS = {
   LoadAccountByEmailRepositoryStub: 'LoadAccountByEmailRepositoryStub',

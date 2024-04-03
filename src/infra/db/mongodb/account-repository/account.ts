@@ -1,6 +1,6 @@
-import { type AddAccountRepository } from '../../../../data/protocols/addAccountRepository';
-import { type AccountModel } from '../../../../domain/models/AccountModel';
-import { type AddAccountModel } from '../../../../domain/useCases/addAccount';
+import { type AddAccountRepository } from '../../../../@data/protocols/db/addAccountRepository';
+import { type AccountModel } from '../../../../@domain/models/AccountModel';
+import { type AddAccountModel } from '../../../../@domain/useCases/addAccount';
 import { mongoHelper } from '../helpers/mongo-helper';
 
 export class AccountMongoRepository implements AddAccountRepository {

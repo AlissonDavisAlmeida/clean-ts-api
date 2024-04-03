@@ -15,7 +15,6 @@ export const mongoHelper = {
 
   async getCollection (name: string) {
     if (!this.client) {
-      console.log('Connecting to MongoDB');
       await this.connect(this.uri);
     }
     return this.client?.db().collection(name);

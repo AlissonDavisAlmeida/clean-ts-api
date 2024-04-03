@@ -1,4 +1,4 @@
-import { type Encrypter } from '../../protocols/encrypter';
+import { type Encrypter } from '../../protocols/criptography/encrypter';
 import { DbAddAccount } from './db-add-account';
 import { type AddAccountRepository, type AccountModel, type AddAccountModel } from './db-add-account-protocols';
 

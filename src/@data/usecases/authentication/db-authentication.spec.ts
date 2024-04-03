@@ -3,6 +3,10 @@ import { type AccountModel } from '@/@data/usecases/add-account/db-add-account-p
 import { type AuthenticationParams } from '@/@domain/useCases/authentication';
 import { DbAuthentication } from './db-authentication';
 
+const CONSTANTS = {
+  LoadAccountByEmailRepositoryStub: 'LoadAccountByEmailRepositoryStub'
+};
+
 interface SutTypes {
   sut: DbAuthentication
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
@@ -38,7 +42,7 @@ function makeSut (): SutTypes {
 }
 
 describe('DbAuthentication UseCase', () => {
-  test('should call LoadAccountByEmailRepository with correct email', async () => {
+  test(`should call ${CONSTANTS.LoadAccountByEmailRepositoryStub} with correct email`, async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
 
     const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail');
@@ -46,5 +50,14 @@ describe('DbAuthentication UseCase', () => {
     await sut.auth(makeFakeAuthenticationParams());
 
     expect(loadSpy).toHaveBeenCalledWith(makeFakeAuthenticationParams().email);
+  });
+  test(`should throw an error if ${CONSTANTS.LoadAccountByEmailRepositoryStub} throws`, async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+
+    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()); }));
+
+    const promise = sut.auth(makeFakeAuthenticationParams());
+
+    await expect(promise).rejects.toThrow();
   });
 });

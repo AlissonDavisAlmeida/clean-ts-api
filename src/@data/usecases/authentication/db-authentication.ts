@@ -20,6 +20,10 @@ export class DbAuthentication implements Authentication {
       hashedPassword: account.password
     });
 
+    if (!isValidPassword) {
+      return null;
+    }
+
     return 'any_token';
   }
 }

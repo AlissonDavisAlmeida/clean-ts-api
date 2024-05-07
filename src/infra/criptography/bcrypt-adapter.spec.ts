@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { BcryptAdapter } from './bcrypt-adapter';
+import { type HashComparerParams } from '@/@data/protocols/criptography';
 
 jest.mock('bcrypt', () => ({
   async hash (): Promise<string> {
@@ -22,6 +23,11 @@ const makeSut = (): MakeSUT => {
     salt
   };
 };
+
+const makeFakeHashComparerParams = (): HashComparerParams => ({
+  password: 'any_value',
+  hashedPassword: 'any_hash'
+});
 
 describe('Bcrypt Adapter', () => {
   test('should call bcrypt hash with correct values', async () => {
@@ -47,16 +53,25 @@ describe('Bcrypt Adapter', () => {
     const hashPromise = sut.hash('any_value');
     await expect(hashPromise).rejects.toThrow();
 
-    const comparePromise = sut.compare({ password: 'any_value', hashedPassword: 'any_hash' });
+    const comparePromise = sut.compare(makeFakeHashComparerParams());
     await expect(comparePromise).rejects.toThrow();
   });
 
   test('should call bcrypt compare with correct values', async () => {
     const { sut } = makeSut();
     const compareSpy = jest.spyOn(bcrypt, 'compare');
-    const hashParams = { password: 'any_value', hashedPassword: 'any_hash' };
+    const hashParams = makeFakeHashComparerParams();
     await sut.compare(hashParams);
 
     expect(compareSpy).toHaveBeenCalledWith(hashParams.password, hashParams.hashedPassword);
+  });
+
+  test('should return true on compare method success', async () => {
+    const { sut } = makeSut();
+
+    const hashParams = makeFakeHashComparerParams();
+    const isSame = await sut.compare(hashParams);
+
+    expect(isSame).toBeTruthy();
   });
 });

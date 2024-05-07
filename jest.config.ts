@@ -6,7 +6,7 @@ const config: Config = {
   roots: [
     '<rootDir>/src'
   ],
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>' }),
+  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   modulePaths: [
     '<rootDir>/src'
   ],

@@ -60,4 +60,27 @@ describe('Account MongoDBRepository', () => {
 
     expect(account).toBeNull();
   });
+
+  test('should update the account accessToken on updateAccessToken success', async () => {
+    const sut = makeSut();
+
+    const result = await accountCollection?.insertOne({
+      name: 'any_name',
+      email: 'any_email@gmail.com',
+      password: 'any_password'
+    });
+
+    const accessToken = 'any_token';
+    const id = result?.insertedId;
+
+    await sut.updateAccessToken({
+      accessToken,
+      id
+    });
+
+    const account = await accountCollection?.findOne({ _id: result?.insertedId });
+
+    expect(account).toBeTruthy();
+    expect(account?.accessToken).toBe(accessToken);
+  });
 });

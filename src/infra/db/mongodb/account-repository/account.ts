@@ -1,10 +1,14 @@
-import { type LoadAccountByEmailRepository } from '@/@data/protocols/db/loadAccountByEmail.repository';
-import { type AddAccountRepository } from '../../../../@data/protocols/db/addAccountRepository';
+import {
+  type LoadAccountByEmailRepository,
+  type AddAccountRepository,
+  type UpdateAccessTokenRepository,
+  type UpdateAccessTokenRepositoryParams
+} from '@/@data/protocols/db';
 import { type AccountModel } from '../../../../@domain/models/AccountModel';
 import { type AddAccountModel } from '../../../../@domain/useCases/addAccount';
 import { mongoHelper } from '../helpers/mongo-helper';
 
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
     const accountCollection = await mongoHelper.getCollection('accounts');
     const result = await accountCollection?.insertOne(accountData);
@@ -30,5 +34,16 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
       return null;
     }
     return mongoHelper.map<AccountModel>(account);
+  }
+
+  async updateAccessToken ({ accessToken, id }: UpdateAccessTokenRepositoryParams): Promise<void> {
+    const accountCollection = await mongoHelper.getCollection('accounts');
+    await accountCollection?.updateOne({
+      _id: id
+    }, {
+      $set: {
+        accessToken
+      }
+    });
   }
 }

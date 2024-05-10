@@ -1,6 +1,6 @@
 export interface UpdateAccessTokenRepositoryParams {
   accessToken: string
-  id: string
+  id: any
 
 }
 

@@ -3,7 +3,7 @@ import {
   type AddAccountRepository,
   type UpdateAccessTokenRepository,
   type UpdateAccessTokenRepositoryParams
-} from '@/@data/protocols/db';
+} from '@/@data/protocols/db/account';
 import { type AccountModel } from '../../../../@domain/models/AccountModel';
 import { type AddAccountModel } from '../../../../@domain/useCases/addAccount';
 import { mongoHelper } from '../helpers/mongo-helper';

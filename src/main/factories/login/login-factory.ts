@@ -7,7 +7,7 @@ import { type Controller } from '@/presentation/protocols';
 import { makeLoginValidatorFactory } from './login-validator-factory';
 import { config } from '@/main/config/env';
 
-export const makeSignupController = (): Controller => {
+export const makeLoginController = (): Controller => {
   const { jwtSecret } = config;
   const accountMongoRepository = new AccountMongoRepository();
   const bcryptAdapter = new BcryptAdapter(12);

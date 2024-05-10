@@ -3,8 +3,7 @@ import {
   type HashComparerParams,
   type LoadAccountByEmailRepository,
   type Encrypter,
-  type UpdateAccessTokenRepository,
-  type UpdateAccessTokenRepositoryParams
+  type UpdateAccessTokenRepository
 } from './db-authentication-protocols';
 import { type AccountModel } from '@/@data/usecases/add-account/db-add-account-protocols';
 import { type AuthenticationParams } from '@/@domain/useCases/authentication';
@@ -17,12 +16,13 @@ const CONSTANTS = {
   UpdateAccessTokenRepository: 'UpdateAccessTokenRepository'
 };
 
+type AccountRepository = LoadAccountByEmailRepository & UpdateAccessTokenRepository;
+
 interface SutTypes {
   sut: DbAuthentication
-  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
+  accountRepository: AccountRepository
   hashCompareStub: HashComparer
   encrypterStub: Encrypter
-  updateAccessTokenRepositoryStub: UpdateAccessTokenRepository
 }
 
 const makeFakeAuthenticationParams = (): AuthenticationParams => ({
@@ -37,14 +37,17 @@ const makeFakeAccount = (): AccountModel => ({
   password: 'hashed_password'
 });
 
-function makeLoadAccountByEmailRepository (): LoadAccountByEmailRepository {
-  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    async loadByEmail (email: string): Promise<AccountModel> {
+function makeAccountRepository (): AccountRepository {
+  class AccountMongoRepositoryStub implements LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+    async loadByEmail (email: string): Promise<AccountModel | null> {
       return new Promise(resolve => { resolve(makeFakeAccount()); });
     }
-  }
 
-  return new LoadAccountByEmailRepositoryStub();
+    async updateAccessToken ({ accessToken, id }: { accessToken: string, id: string }): Promise<void> {
+      return new Promise(resolve => { resolve(); });
+    }
+  }
+  return new AccountMongoRepositoryStub();
 }
 
 function makeHashComparer (): HashComparer {
@@ -67,51 +70,38 @@ function makeEncrypter (): Encrypter {
   return new EncrypterStub();
 }
 
-function makeUpdateAccessTokenRepository (): UpdateAccessTokenRepository {
-  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    async updateAccessToken (data: UpdateAccessTokenRepositoryParams): Promise<void> {
-      return new Promise(resolve => { resolve(); });
-    }
-  }
-
-  return new UpdateAccessTokenRepositoryStub();
-}
-
 function makeSut (): SutTypes {
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
+  const accountRepository = makeAccountRepository();
   const hashCompareStub = makeHashComparer();
   const encrypterStub = makeEncrypter();
-  const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository();
   const sut = new DbAuthentication(
-    loadAccountByEmailRepositoryStub,
+    accountRepository,
     hashCompareStub,
-    encrypterStub,
-    updateAccessTokenRepositoryStub
+    encrypterStub
   );
 
   return {
     sut,
-    loadAccountByEmailRepositoryStub,
+    accountRepository,
     hashCompareStub,
-    encrypterStub,
-    updateAccessTokenRepositoryStub
+    encrypterStub
   };
 }
 
 describe('DbAuthentication UseCase', () => {
   test(`should call ${CONSTANTS.LoadAccountByEmailRepositoryStub} with correct email`, async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    const { sut, accountRepository } = makeSut();
 
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail');
+    const loadSpy = jest.spyOn(accountRepository, 'loadByEmail');
 
     await sut.auth(makeFakeAuthenticationParams());
 
     expect(loadSpy).toHaveBeenCalledWith(makeFakeAuthenticationParams().email);
   });
   test(`should throw an error if ${CONSTANTS.LoadAccountByEmailRepositoryStub} throws`, async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    const { sut, accountRepository } = makeSut();
 
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()); }));
+    jest.spyOn(accountRepository, 'loadByEmail').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()); }));
 
     const promise = sut.auth(makeFakeAuthenticationParams());
 
@@ -119,9 +109,9 @@ describe('DbAuthentication UseCase', () => {
   });
 
   test(`should return null if ${CONSTANTS.LoadAccountByEmailRepositoryStub} returns null`, async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    const { sut, accountRepository } = makeSut();
 
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.resolve(null));
+    jest.spyOn(accountRepository, 'loadByEmail').mockReturnValueOnce(Promise.resolve(null));
 
     const accessToken = await sut.auth(makeFakeAuthenticationParams());
 
@@ -185,8 +175,8 @@ describe('DbAuthentication UseCase', () => {
   });
 
   test(`should call ${CONSTANTS.UpdateAccessTokenRepository} with correct values`, async () => {
-    const { sut, updateAccessTokenRepositoryStub } = makeSut();
-    const updateSpy = jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken');
+    const { sut, accountRepository } = makeSut();
+    const updateSpy = jest.spyOn(accountRepository, 'updateAccessToken');
 
     await sut.auth(makeFakeAuthenticationParams());
 
@@ -197,9 +187,9 @@ describe('DbAuthentication UseCase', () => {
   });
 
   test(`should throws an error if ${CONSTANTS.UpdateAccessTokenRepository} throw an error`, async () => {
-    const { sut, updateAccessTokenRepositoryStub } = makeSut();
+    const { sut, accountRepository } = makeSut();
 
-    jest.spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()); }));
+    jest.spyOn(accountRepository, 'updateAccessToken').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()); }));
     const promise = sut.auth(makeFakeAuthenticationParams());
 
     await expect(promise).rejects.toThrow();

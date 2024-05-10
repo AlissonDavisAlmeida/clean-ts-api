@@ -3,14 +3,13 @@ import { type AuthenticationParams, type Authentication } from '@/@domain/useCas
 
 export class DbAuthentication implements Authentication {
   constructor (
-    private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository,
+    private readonly accountRepository: LoadAccountByEmailRepository & UpdateAccessTokenRepository,
     private readonly hashComparer: HashComparer,
-    private readonly encrypter: Encrypter,
-    private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
+    private readonly encrypter: Encrypter
   ) { }
 
   async auth (authenticationParams: AuthenticationParams): Promise<string | null> {
-    const account = await this.loadAccountByEmailRepository.loadByEmail(authenticationParams.email);
+    const account = await this.accountRepository.loadByEmail(authenticationParams.email);
 
     if (!account) {
       return null;
@@ -27,7 +26,7 @@ export class DbAuthentication implements Authentication {
 
     const token = await this.encrypter.generate(account.id);
 
-    await this.updateAccessTokenRepository.updateAccessToken({
+    await this.accountRepository.updateAccessToken({
       id: account.id,
       accessToken: token
     });

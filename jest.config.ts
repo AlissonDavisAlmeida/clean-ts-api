@@ -20,7 +20,7 @@ const config: Config = {
     '^.+\\.ts$': 'ts-jest'
   },
   preset: "@shelf/jest-mongodb",
-  setupFiles:["dotenv/config"]
+  setupFiles: ["dotenv/config"]
 };
 
 export default config;

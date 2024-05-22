@@ -1,11 +1,11 @@
-import { DbAuthentication } from '@/@data/usecases/authentication/db-authentication';
-import { BcryptAdapter, JWTAdapter } from '@/infra/criptography';
+import { DbAuthentication } from '../../../@data/usecases/authentication/db-authentication';
+import { BcryptAdapter, JWTAdapter } from '../../../infra/criptography';
 import { AccountMongoRepository, LogMongoRepository } from '@/infra/db/mongodb';
-import { LogControllerDecorator } from '@/main/decorators/log-controller.decorator';
-import { LoginController } from '@/presentation/controller/login/loginController';
-import { type Controller } from '@/presentation/protocols';
+import { LogControllerDecorator } from '../../decorators/log-controller.decorator';
+import { LoginController } from '../../../presentation/controller/login/loginController';
+import { type Controller } from '../../../presentation/protocols';
 import { makeLoginValidatorFactory } from './login-validator-factory';
-import { config } from '@/main/config/env';
+import { config } from '../../config/env';
 
 export const makeLoginController = (): Controller => {
   const { jwtSecret } = config;

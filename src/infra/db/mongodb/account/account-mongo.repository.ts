@@ -11,6 +11,12 @@ import { mongoHelper } from '../helpers/mongo-helper';
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
     const accountCollection = await mongoHelper.getCollection('accounts');
+    const accountExists = await accountCollection?.findOne({ email: accountData.email });
+
+    if (accountExists) {
+      throw new Error('Account already exists');
+    }
+
     const result = await accountCollection?.insertOne(accountData);
 
     if (!result?.acknowledged) {

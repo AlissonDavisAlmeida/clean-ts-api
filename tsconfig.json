@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "outDir": "./dist/",
+        "outDir": "dist",
         "rootDir": "./src",
         "baseUrl": "./src",
         "paths": {
@@ -9,7 +9,6 @@
         "module": "commonjs",
         "target": "ES2019",
         "esModuleInterop": true,
-        "allowJs": true,
         "strict": true,
         "resolveJsonModule": true
     },
@@ -20,6 +19,7 @@
         "./jest-unit.config.ts",
         "./jest-integration.config.ts",
         "./jest-mongodb-config.ts",
+        "./jest-setup.ts",
         "./coverage"
     ],
     "ts-node": {

@@ -88,7 +88,7 @@ describe('Login Controller', () => {
 
     const httpResponse = await sut.handle(httpRequest);
 
-    expect(httpResponse).toEqual(serverError(new ServerError('any_stack')));
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 
   test('should returns a token and status 200 after authentication credentials', async () => {

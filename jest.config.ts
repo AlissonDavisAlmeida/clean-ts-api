@@ -19,7 +19,8 @@ const config: Config = {
   transform: {
     '^.+\\.ts$': 'ts-jest'
   },
-  preset: "@shelf/jest-mongodb"
+  preset: "@shelf/jest-mongodb",
+  setupFiles:["dotenv/config"]
 };
 
 export default config;

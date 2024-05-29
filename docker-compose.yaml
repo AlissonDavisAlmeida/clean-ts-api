@@ -8,7 +8,8 @@ services:
     image: clean-node-api  
     ports:
       - "3000:3000"
+      - "9222:9222"
     volumes:
       - ./dist:/usr/src/app/dist
-    command: npm start  
+    command: npm run debug  
     

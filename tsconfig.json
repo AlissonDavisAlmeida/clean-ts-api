@@ -10,7 +10,8 @@
         "target": "ES2019",
         "esModuleInterop": true,
         "strict": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "sourceMap": true
     },
     
     "exclude": [

@@ -2,14 +2,16 @@ version: "3.8"
 services:
   api:
     container_name: clean-node-api
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: clean-node-api  
+    working_dir: /usr/src/app
+    image: node:18.19.0-alpine
     ports:
       - "3000:3000"
       - "9222:9222"
     volumes:
+      - ./src:/usr/src/app/src
       - ./dist:/usr/src/app/dist
-    command: npm run debug  
+      - ./package.json:/usr/src/app/package.json
+      - ./tsconfig.json:/usr/src/app/tsconfig.json
+      - ./.env:/usr/src/app/.env
+    command: sh -c  "corepack enable &&  yarn  && yarn debug"  
     

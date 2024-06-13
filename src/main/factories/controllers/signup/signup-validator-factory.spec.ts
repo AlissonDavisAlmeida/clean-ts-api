@@ -5,7 +5,7 @@ import { ValidationComposite } from '@/presentation/helpers/validators/validatio
 import { type EmailValidator } from '@/presentation/protocols/emailValidator';
 import { makeSignupValidatorFactory } from './signup-validator-factory';
 
-jest.mock('../../../presentation/helpers/validators/validation-composite');
+jest.mock('../../../../presentation/helpers/validators/validation-composite');
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -13,7 +13,7 @@ const makeEmailValidator = (): EmailValidator => {
       return true;
     }
   }
-
+  console.log(new EmailValidatorStub());
   return new EmailValidatorStub();
 };
 describe('SignupValidator Factory', () => {

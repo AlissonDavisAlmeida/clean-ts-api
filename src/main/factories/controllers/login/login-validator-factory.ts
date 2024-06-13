@@ -1,5 +1,5 @@
-import { EmailValidatorAdapter } from '../../../adapters/validators/email/email-validator-adapter';
-import { RequiredFieldsValidation, ValidationComposite, EmailValidation } from '../../../../presentation/helpers/validators';
+import { EmailValidatorAdapter } from '../../../../infra/validators/email/email-validator-adapter';
+import { RequiredFieldsValidation, ValidationComposite, EmailValidation } from '../../../../validation/validators';
 import { type Validation } from '../../../../presentation/protocols/validation';
 
 export const makeLoginValidatorFactory = (): Validation => {

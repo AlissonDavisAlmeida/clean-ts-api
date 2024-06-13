@@ -1,4 +1,3 @@
-
 import { type AccountModel } from '@/@domain/models/AccountModel';
 
 export interface LoadAccountByEmailRepository {

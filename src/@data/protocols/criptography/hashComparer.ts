@@ -1,4 +1,3 @@
-
 export interface HashComparerParams {
   password: string
   hashedPassword: string

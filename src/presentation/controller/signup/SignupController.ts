@@ -4,13 +4,15 @@ import {
   type AddAccount,
   type HttpRequest,
   type HttpResponse,
-  type Validation
+  type Validation,
+  type Authentication
 } from './signup.protocols';
 
 export class SignupController implements Controller {
   constructor (
     private readonly addAccount: AddAccount,
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly authentication: Authentication
   ) { }
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -29,7 +31,9 @@ export class SignupController implements Controller {
         password
       });
 
-      return ok(account);
+      const accessToken = await this.authentication.auth({ email: account.email, password: account.password });
+
+      return ok(accessToken);
     } catch (error: any) {
       return serverError(error);
     }

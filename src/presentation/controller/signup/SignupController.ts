@@ -1,4 +1,5 @@
-import { badRequest, ok, serverError } from '../../helpers/httpHelper';
+import { AccountAlreadyExistsError } from '@/presentation/errors';
+import { accountAlreadyExists, badRequest, ok, serverError } from '../../helpers/httpHelper';
 import {
   type Controller,
   type AddAccount,
@@ -35,6 +36,9 @@ export class SignupController implements Controller {
 
       return ok(accessToken);
     } catch (error: any) {
+      if (error instanceof AccountAlreadyExistsError) {
+        return accountAlreadyExists(error);
+      }
       return serverError(error);
     }
   }

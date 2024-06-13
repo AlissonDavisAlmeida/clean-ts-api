@@ -1,5 +1,5 @@
-import { MissingParamError } from '../../errors';
-import { badRequest, ok, serverError } from '../../helpers/httpHelper';
+import { AccountAlreadyExistsError, MissingParamError } from '../../errors';
+import { accountAlreadyExists, badRequest, ok, serverError } from '../../helpers/httpHelper';
 import { SignupController } from './SignupController';
 import {
   type Authentication,
@@ -118,6 +118,33 @@ describe('Signup Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  test('should returns 500 if Authentication throws an error', async () => {
+    const { sut, authenticationStub } = makeSut();
+
+    const httpRequest = makeFakeRequest();
+
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  test('should return 403 if account already exists', async () => {
+    const { sut, addAccountStub } = makeSut();
+
+    jest.spyOn(addAccountStub, 'add').mockImplementationOnce(async () => {
+      return await new Promise((resolve, reject) => { reject(new AccountAlreadyExistsError()); });
+    });
+
+    const httpRequest = makeFakeRequest();
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(accountAlreadyExists(new AccountAlreadyExistsError()));
   });
 
   test('should return 200 if valid data is provided', async () => {

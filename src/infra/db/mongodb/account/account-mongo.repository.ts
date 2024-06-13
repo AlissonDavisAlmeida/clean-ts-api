@@ -7,6 +7,7 @@ import {
 import { type AccountModel } from '../../../../@domain/models/AccountModel';
 import { type AddAccountModel } from '../../../../@domain/useCases/addAccount';
 import { mongoHelper } from '../helpers/mongo-helper';
+import { AccountAlreadyExistsError } from '@/presentation/errors';
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
   async add (accountData: AddAccountModel): Promise<AccountModel> {
@@ -14,7 +15,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
     const accountExists = await accountCollection?.findOne({ email: accountData.email });
 
     if (accountExists) {
-      throw new Error('Account already exists');
+      throw new AccountAlreadyExistsError();
     }
 
     const result = await accountCollection?.insertOne(accountData);

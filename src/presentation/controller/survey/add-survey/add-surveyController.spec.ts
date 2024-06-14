@@ -1,6 +1,6 @@
 import { type Validation, type HttpRequest } from '@/presentation/controller/account/signup/signup.protocols';
 import { AddSurveyController } from './add-surveyController';
-import { badRequest } from '@/presentation/helpers/httpHelper';
+import { badRequest, serverError } from '@/presentation/helpers/httpHelper';
 import { type AddSurvey } from '@/@domain/useCases/survey/add-survey';
 
 interface SutTypes {
@@ -21,7 +21,7 @@ const makeValidation = (): Validation => {
 
 const makeAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
-    add = async (data: any): Promise<void> => {};
+    add = async (data: any): Promise<void> => { };
   }
 
   return new AddSurveyStub();
@@ -74,7 +74,6 @@ describe('AddSurveyController', () => {
 
     expect(httpResponse).toEqual(badRequest(new Error()));
   });
-
   it('should call AddSurvey usecase with correct values', async () => {
     const { sut, addSurvey } = makeSut();
 
@@ -85,5 +84,19 @@ describe('AddSurveyController', () => {
     await sut.handle(httpRequest);
 
     expect(addSurveySpy).toHaveBeenCalledWith(httpRequest.body);
+  });
+
+  it('should return serverError 500 if AddSurvey throws', async () => {
+    const { sut, addSurvey } = makeSut();
+
+    jest.spyOn(addSurvey, 'add').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpRequest = makeHttpRequest();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });

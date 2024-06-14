@@ -1,4 +1,4 @@
-import { type Authentication, type AuthenticationParams } from '@/@domain/useCases/authentication';
+import { type Authentication, type AuthenticationParams } from '@/@domain/useCases/account/authentication';
 import { MissingParamError } from '@/presentation/errors';
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/httpHelper';
 import { type Validation, type HttpRequest } from '@/presentation/protocols';

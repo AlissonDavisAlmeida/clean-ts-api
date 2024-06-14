@@ -1,4 +1,4 @@
-import { type Hasher } from '../../protocols/criptography/hasher';
+import { type Hasher } from '../../../protocols/criptography/hasher';
 import { DbAddAccount } from './db-add-account';
 import { type AddAccountRepository, type AccountModel, type AddAccountModel } from './db-add-account-protocols';
 

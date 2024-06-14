@@ -1,4 +1,4 @@
-import { type Authentication } from '@/@domain/useCases/authentication';
+import { type Authentication } from '@/@domain/useCases/account/authentication';
 import { badRequest, ok, serverError, unauthorized } from '../../../helpers/httpHelper';
 import { type Controller, type HttpRequest, type HttpResponse } from '../../../protocols';
 import { type Validation } from '../../../protocols/validation';

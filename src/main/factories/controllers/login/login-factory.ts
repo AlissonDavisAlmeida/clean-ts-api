@@ -1,4 +1,4 @@
-import { DbAuthentication } from '../../../../@data/usecases/authentication/db-authentication';
+import { DbAuthentication } from '../../../../@data/usecases/account/authentication/db-authentication';
 import { BcryptAdapter, JWTAdapter } from '../../../../infra/criptography';
 import { AccountMongoRepository, LogMongoRepository } from '@/infra/db/mongodb';
 import { LogControllerDecorator } from '../../../decorators/log-controller.decorator';

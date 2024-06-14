@@ -5,8 +5,8 @@ import {
   type Encrypter,
   type UpdateAccessTokenRepository
 } from './db-authentication-protocols';
-import { type AccountModel } from '@/@data/usecases/add-account/db-add-account-protocols';
-import { type AuthenticationParams } from '@/@domain/useCases/authentication';
+import { type AccountModel } from '@/@data/usecases/account/add-account/db-add-account-protocols';
+import { type AuthenticationParams } from '@/@domain/useCases/account/authentication';
 import { DbAuthentication } from './db-authentication';
 
 const CONSTANTS = {

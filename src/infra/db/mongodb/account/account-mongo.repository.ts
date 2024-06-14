@@ -5,7 +5,7 @@ import {
   type UpdateAccessTokenRepositoryParams
 } from '@/@data/protocols/db/account';
 import { type AccountModel } from '../../../../@domain/models/AccountModel';
-import { type AddAccountModel } from '../../../../@domain/useCases/addAccount';
+import { type AddAccountModel } from '../../../../@domain/useCases/account/addAccount';
 import { mongoHelper } from '../helpers/mongo-helper';
 import { AccountAlreadyExistsError } from '@/presentation/errors';
 

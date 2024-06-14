@@ -1,5 +1,5 @@
-import { DbAuthentication } from '@/@data/usecases/authentication/db-authentication';
-import { DbAddAccount } from '@/@data/usecases/add-account/db-add-account';
+import { DbAuthentication } from '@/@data/usecases/account/authentication/db-authentication';
+import { DbAddAccount } from '@/@data/usecases/account/add-account/db-add-account';
 import { BcryptAdapter } from '@/infra/criptography/bcrypt-adapter/bcrypt-adapter';
 import { AccountMongoRepository } from '@/infra/db/mongodb/account/account-mongo.repository';
 import { LogMongoRepository } from '@/infra/db/mongodb/log/log-mongo.repository';

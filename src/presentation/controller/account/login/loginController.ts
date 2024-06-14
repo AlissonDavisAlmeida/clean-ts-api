@@ -1,7 +1,7 @@
 import { type Authentication } from '@/@domain/useCases/authentication';
-import { badRequest, ok, serverError, unauthorized } from '../../helpers/httpHelper';
-import { type Controller, type HttpRequest, type HttpResponse } from '../../protocols';
-import { type Validation } from '../../protocols/validation';
+import { badRequest, ok, serverError, unauthorized } from '../../../helpers/httpHelper';
+import { type Controller, type HttpRequest, type HttpResponse } from '../../../protocols';
+import { type Validation } from '../../../protocols/validation';
 
 export class LoginController implements Controller {
   constructor (

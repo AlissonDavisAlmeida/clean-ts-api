@@ -2,7 +2,7 @@ import { DbAuthentication } from '../../../../@data/usecases/authentication/db-a
 import { BcryptAdapter, JWTAdapter } from '../../../../infra/criptography';
 import { AccountMongoRepository, LogMongoRepository } from '@/infra/db/mongodb';
 import { LogControllerDecorator } from '../../../decorators/log-controller.decorator';
-import { LoginController } from '../../../../presentation/controller/login/loginController';
+import { LoginController } from '../../../../presentation/controller/account/login/loginController';
 import { type Controller } from '../../../../presentation/protocols';
 import { makeLoginValidatorFactory } from './login-validator-factory';
 import { config } from '../../../config/env';

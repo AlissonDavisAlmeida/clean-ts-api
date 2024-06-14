@@ -1,8 +1,7 @@
 import { type Authentication, type AuthenticationParams } from '@/@domain/useCases/authentication';
-import { MissingParamError } from '../../errors';
-import { badRequest, ok, serverError, unauthorized } from '../../helpers/httpHelper';
-import { type HttpRequest } from '../../protocols';
-import { type Validation } from '../signup/signup.protocols';
+import { MissingParamError } from '@/presentation/errors';
+import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/httpHelper';
+import { type Validation, type HttpRequest } from '@/presentation/protocols';
 import { LoginController } from './loginController';
 
 interface SutTypes {

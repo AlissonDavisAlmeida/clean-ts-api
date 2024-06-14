@@ -1,5 +1,5 @@
 import { AccountAlreadyExistsError } from '@/presentation/errors';
-import { accountAlreadyExists, badRequest, ok, serverError } from '../../helpers/httpHelper';
+import { accountAlreadyExists, badRequest, ok, serverError } from '@/presentation/helpers/httpHelper';
 import {
   type Controller,
   type AddAccount,

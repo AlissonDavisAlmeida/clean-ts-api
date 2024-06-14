@@ -1,5 +1,5 @@
-import { AccountAlreadyExistsError, MissingParamError } from '../../errors';
-import { accountAlreadyExists, badRequest, ok, serverError } from '../../helpers/httpHelper';
+import { AccountAlreadyExistsError, MissingParamError } from '@/presentation/errors';
+import { accountAlreadyExists, badRequest, ok, serverError } from '@/presentation/helpers/httpHelper';
 import { SignupController } from './SignupController';
 import {
   type Authentication,

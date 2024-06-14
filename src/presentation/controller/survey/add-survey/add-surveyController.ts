@@ -1,6 +1,6 @@
 import { type AddSurvey } from '@/@domain/useCases/survey/add-survey';
 import { type Validation, type Controller, type HttpRequest, type HttpResponse } from '@/presentation/controller/account/signup/signup.protocols';
-import { badRequest, serverError } from '@/presentation/helpers/httpHelper';
+import { badRequest, noContent, serverError } from '@/presentation/helpers/httpHelper';
 
 export class AddSurveyController implements Controller {
   constructor (
@@ -20,10 +20,7 @@ export class AddSurveyController implements Controller {
 
       await this.addSurvey.add({ question, answers });
 
-      return {
-        statusCode: 200,
-        body: {}
-      };
+      return noContent();
     } catch (error: any) {
       return serverError(error);
     }

@@ -1,5 +1,5 @@
-import { type AddSurveyParams } from '@/@domain/useCases/survey/add-survey';
+import { type SurveyModel } from '@/@domain/models/SurveyModel';
 
 export interface AddSurveyRepository {
-  add: (data: AddSurveyParams) => Promise<void>
+  add: (data: SurveyModel) => Promise<void>
 }

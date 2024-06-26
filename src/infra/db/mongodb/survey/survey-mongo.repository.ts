@@ -9,13 +9,13 @@ export class SurveyMongoRepository implements AddSurveyRepository {
     const result = await surveyCollection?.insertOne(surveyData);
 
     if (!result?.acknowledged) {
-      throw new Error('Error on insert new account');
+      throw new Error('Error on insert new survey');
     }
 
     const account = await surveyCollection?.findOne({ _id: result.insertedId });
 
     if (!account) {
-      throw new Error('Error on find inserted account');
+      throw new Error('Error on find inserted survey');
     }
 
     // return mongoHelper.map<AddSurveyParams>(account);

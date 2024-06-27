@@ -14,6 +14,10 @@ const config: Config = {
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main/**'
   ],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/src/**/protocols/**',
+    '<rootDir>/src/**/index.ts',
+  ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
   transform: {

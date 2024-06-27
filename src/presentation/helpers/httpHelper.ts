@@ -16,6 +16,11 @@ export const accountAlreadyExists = (error: Error): HttpResponse => ({
   body: error
 });
 
+export const forbidden = (error: Error): HttpResponse => ({
+  statusCode: 403,
+  body: error
+});
+
 export const serverError = (error: Error): HttpResponse => ({
   statusCode: 500,
   body: error instanceof ServerError ? error : new ServerError(error.stack, error.message)

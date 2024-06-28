@@ -13,7 +13,8 @@
                 "@typescript-eslint/explicit-function-return-type": "off",
                 "@typescript-eslint/strict-boolean-expressions": "off",
                 "@typescript-eslint/return-await": "off",
-                "semi": ["warn", "always"]
+                "semi": ["warn", "always"],
+                "@typescript-eslint/consistent-type-definitions": "off"
             }
 
         }

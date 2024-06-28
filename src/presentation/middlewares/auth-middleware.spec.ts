@@ -67,4 +67,18 @@ describe('AuthMiddleware', () => {
 
     expect(httpResponse).toStrictEqual(forbidden(new AccessDeniedError()));
   });
+
+  test('should return 200 if LoadAccountByToken returns an account', async () => {
+    const { sut } = makeSut();
+
+    const httpResponse = await sut.handle(fakeRequest);
+
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toStrictEqual({
+      id: 'any_id',
+      name: 'any_name',
+      email: 'any_email',
+      password: 'any_password'
+    });
+  });
 });

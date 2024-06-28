@@ -1,22 +1,26 @@
-import { type LoadAccountByTokenResponse, type LoadAccountByToken } from '@/@domain/useCases/account/loadAccountByToken';
+import { type LoadAccountByToken } from '@/@domain/useCases/account/loadAccountByToken';
 import { AccessDeniedError } from '../errors';
 import { forbidden, ok } from '../helpers/httpHelper';
 import { type HttpRequest } from '../protocols';
 import { AuthMiddleware } from './auth-middleware';
+import { type AccountModel } from '../controller/account/signup/signup.protocols';
 
 interface SutTypes {
   sut: AuthMiddleware
   loadAccountByTokenStub: LoadAccountByToken
 }
 
-const makeFakeAccountID = () => ({
-  account_id: 'any_id'
+const makeFakeAccount = () => ({
+  id: 'any_id',
+  name: 'any_name',
+  email: 'any_email',
+  password: 'any_password'
 });
 
 const makeLoadAccountByToken = (): LoadAccountByToken => {
   class LoadAccountByTokenStub implements LoadAccountByToken {
-    load = async (accessToken: string): Promise<LoadAccountByTokenResponse> => {
-      return makeFakeAccountID();
+    load = async (accessToken: string): Promise<AccountModel> => {
+      return makeFakeAccount();
     };
   }
 
@@ -71,6 +75,6 @@ describe('AuthMiddleware', () => {
 
     const httpResponse = await sut.handle(fakeRequest);
 
-    expect(httpResponse).toStrictEqual(ok(makeFakeAccountID()));
+    expect(httpResponse).toStrictEqual(ok({ account_id: makeFakeAccount().id }));
   });
 });

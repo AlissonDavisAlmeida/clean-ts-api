@@ -18,12 +18,14 @@ export class AuthMiddleware implements Middleware {
       return this.returnForbidden();
     }
 
-    const accountId = await this.loadAccountByToken.load(accessToken);
+    const account = await this.loadAccountByToken.load(accessToken);
 
-    if (!accountId) {
+    if (!account) {
       return this.returnForbidden();
     }
 
-    return ok(accountId);
+    return ok({
+      account_id: account.id
+    });
   };
 }

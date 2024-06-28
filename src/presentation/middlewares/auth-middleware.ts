@@ -1,6 +1,6 @@
 import { type LoadAccountByToken } from '@/@domain/useCases/account/loadAccountByToken';
 import { AccessDeniedError } from '../errors';
-import { forbidden } from '../helpers/httpHelper';
+import { forbidden, ok } from '../helpers/httpHelper';
 import { type HttpRequest, type HttpResponse } from '../protocols';
 import { type Middleware } from '../protocols/middlewares';
 
@@ -24,9 +24,6 @@ export class AuthMiddleware implements Middleware {
       return this.returnForbidden();
     }
 
-    return {
-      statusCode: 200,
-      body: account
-    };
+    return ok(account);
   };
 }

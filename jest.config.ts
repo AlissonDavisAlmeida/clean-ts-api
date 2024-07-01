@@ -15,8 +15,8 @@ const config: Config = {
     '!<rootDir>/src/main/**'
   ],
   coveragePathIgnorePatterns: [
-    '<rootDir>/src/**/protocols/**',
-    '<rootDir>/src/**/index.ts',
+    'protocols',
+    'index.ts',
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',

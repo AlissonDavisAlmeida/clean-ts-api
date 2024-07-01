@@ -5,7 +5,10 @@ import { type HttpRequest, type HttpResponse } from '../protocols';
 import { type Middleware } from '../protocols/middlewares';
 
 export class AuthMiddleware implements Middleware {
-  constructor (private readonly loadAccountByToken: LoadAccountByToken) { }
+  constructor (
+    private readonly loadAccountByToken: LoadAccountByToken,
+    private readonly role?: string
+  ) { }
 
   private returnForbidden () {
     return forbidden(new AccessDeniedError());
@@ -18,7 +21,7 @@ export class AuthMiddleware implements Middleware {
       return this.returnForbidden();
     }
     try {
-      const account = await this.loadAccountByToken.load(accessToken);
+      const account = await this.loadAccountByToken.load(accessToken, this.role);
 
       if (!account) {
         return this.returnForbidden();

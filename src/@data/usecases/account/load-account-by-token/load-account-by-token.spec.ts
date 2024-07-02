@@ -89,4 +89,12 @@ describe('LoadAccountByToken Usecase', () => {
 
     expect(account).toBeNull();
   });
+
+  test('should return an account on success', async () => {
+    const { sut } = makeSut();
+
+    const account = await sut.load('any_token');
+
+    expect(account).toEqual(makeFakeAccount());
+  });
 });

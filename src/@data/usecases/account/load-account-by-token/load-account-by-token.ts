@@ -15,11 +15,9 @@ export class LoadAccountByTokenUseCase implements LoadAccountByToken {
     if (token) {
       const account = this.loadAccountByTokenRepository.loadByToken(accessToken, role);
 
-      if (!account) {
-        return null;
+      if (account) {
+        return account;
       }
-
-      return account;
     }
 
     return null;

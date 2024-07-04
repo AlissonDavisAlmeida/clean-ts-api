@@ -8,8 +8,24 @@ import { type AccountModel } from '../../../../@domain/models/AccountModel';
 import { type AddAccountModel } from '../../../../@domain/useCases/account/addAccount';
 import { mongoHelper } from '../helpers/mongo-helper';
 import { AccountAlreadyExistsError } from '@/presentation/errors';
+import { type LoadAccountByTokenRepository } from '@/@data/protocols/db/account/loadAccountByToken.repository';
 
-export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
+  async loadByToken (token: string, role?: string): Promise<AccountModel | null> {
+    const accountCollection = await mongoHelper.getCollection('accounts');
+    const account = await accountCollection?.findOne({
+      accessToken: token,
+      role
+
+    });
+
+    if (!account) {
+      return null;
+    }
+
+    return mongoHelper.map<AccountModel>(account);
+  }
+
   async add (accountData: AddAccountModel): Promise<AccountModel> {
     const accountCollection = await mongoHelper.getCollection('accounts');
     const accountExists = await accountCollection?.findOne({ email: accountData.email });

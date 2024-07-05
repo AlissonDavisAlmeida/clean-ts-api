@@ -18,7 +18,7 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
       role
 
     });
-
+    console.log('🚀 ~ AccountMongoRepository ~ loadByToken ~ account', account);
     if (!account) {
       return null;
     }

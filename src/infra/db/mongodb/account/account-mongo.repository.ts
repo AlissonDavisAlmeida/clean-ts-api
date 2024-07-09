@@ -15,10 +15,11 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
     const accountCollection = await mongoHelper.getCollection('accounts');
     const account = await accountCollection?.findOne({
       accessToken: token,
-      role
+      $or: [{
+        role
+      }, { role: 'admin' }]
 
     });
-    console.log('🚀 ~ AccountMongoRepository ~ loadByToken ~ account', account);
     if (!account) {
       return null;
     }

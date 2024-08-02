@@ -6,15 +6,14 @@ import { type AddSurveyParams } from '@/@domain/useCases/survey/add-survey';
 import jwt from 'jsonwebtoken';
 import { config } from '@/main/config/env';
 
-const fakeSurveyData = (): AddSurveyParams => ({
+const fakeSurveyData = (): Omit<AddSurveyParams, 'date'> => ({
   question: 'any_question',
   answers: [
     {
       image: 'any_image',
       answer: 'any_answer'
     }
-  ],
-  date: new Date()
+  ]
 });
 describe('Survey routes', () => {
   let surveyCollection: Collection<Document> | undefined;

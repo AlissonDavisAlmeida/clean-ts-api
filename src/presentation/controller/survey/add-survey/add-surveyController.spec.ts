@@ -2,6 +2,7 @@ import { type Validation, type HttpRequest } from '@/presentation/controller/acc
 import { AddSurveyController } from './add-surveyController';
 import { badRequest, noContent, serverError } from '@/presentation/helpers/httpHelper';
 import { type AddSurvey } from '@/@domain/useCases/survey/add-survey';
+import MockDate from 'mockdate';
 
 interface SutTypes {
   sut: AddSurveyController
@@ -53,6 +54,14 @@ const makeHttpRequest = (): HttpRequest => ({
 });
 
 describe('AddSurveyController', () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   it('should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut();
 

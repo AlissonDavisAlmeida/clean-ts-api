@@ -1,6 +1,7 @@
 import { type AddSurveyParams, type AddSurvey } from '@/@domain/useCases/survey/add-survey';
 import { AddSurveyUseCase } from './add-survey.usecase';
 import { type AddSurveyRepository } from '@/@data/protocols/db/survey/add-survey.repository';
+import MockDate from 'mockdate';
 
 interface SutTypes {
   sut: AddSurvey
@@ -37,6 +38,14 @@ const fakeSurveyData = (): AddSurveyParams => ({
 });
 
 describe('AddSurveyUseCase', () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
+
   test('should call AddSurveyRepository with correct values', async () => {
     const { sut, addSurveyRepositoryStub } = makeSut();
 

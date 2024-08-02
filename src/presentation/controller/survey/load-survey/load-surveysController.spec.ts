@@ -1,6 +1,7 @@
 import { type SurveyModel } from '@/@domain/models/SurveyModel';
 import { LoadSurveysController } from './load-surveysController';
 import { type LoadSurveys } from '@/@domain/useCases/survey/load-survey';
+import { ok } from '@/presentation/helpers/httpHelper';
 
 type SutTypes = {
   sut: LoadSurveysController
@@ -62,5 +63,12 @@ describe('LoadSurveysController', () => {
     await sut.handle({});
 
     expect(loadSpy).toHaveBeenCalled();
+  });
+
+  test('should return 200 on success', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle({});
+
+    expect(httpResponse).toEqual(ok(makeFakeSurveys()));
   });
 });

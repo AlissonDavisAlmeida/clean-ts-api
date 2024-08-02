@@ -1,7 +1,8 @@
 import { type SurveyModel } from '@/@domain/models/SurveyModel';
 import { LoadSurveysController } from './load-surveysController';
 import { type LoadSurveys } from '@/@domain/useCases/survey/load-survey';
-import { ok } from '@/presentation/helpers/httpHelper';
+import { ok, serverError } from '@/presentation/helpers/httpHelper';
+import MockDate from 'mockdate';
 
 type SutTypes = {
   sut: LoadSurveysController
@@ -57,6 +58,13 @@ const makeSut = (): SutTypes => {
 };
 
 describe('LoadSurveysController', () => {
+  beforeAll(() => {
+    MockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    MockDate.reset();
+  });
   test('should call LoadSurveys', async () => {
     const { loadSurveysStub, sut } = makeSut();
     const loadSpy = jest.spyOn(loadSurveysStub, 'load');
@@ -70,5 +78,13 @@ describe('LoadSurveysController', () => {
     const httpResponse = await sut.handle({});
 
     expect(httpResponse).toEqual(ok(makeFakeSurveys()));
+  });
+
+  test('should return 500 if LoadSurveys throws', async () => {
+    const { sut, loadSurveysStub } = makeSut();
+    jest.spyOn(loadSurveysStub, 'load').mockReturnValueOnce(new Promise((resolve, reject) => { reject(new Error()); }));
+    const httpResponse = await sut.handle({});
+
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });

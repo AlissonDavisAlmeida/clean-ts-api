@@ -7,6 +7,7 @@ interface SurveyAnswer {
 export interface AddSurveyParams {
   question: string
   answers: SurveyAnswer[]
+  date: Date
 
 }
 

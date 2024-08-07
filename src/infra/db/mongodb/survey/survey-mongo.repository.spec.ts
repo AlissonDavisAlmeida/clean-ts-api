@@ -33,17 +33,43 @@ describe('SurveyMongoDBRepository', () => {
     await surveyCollection?.deleteMany({});
   });
 
-  test('should add survey in database', async () => {
-    const sut = makeSut();
+  describe('add()', () => {
+    test('should add survey in database', async () => {
+      const sut = makeSut();
 
-    const data = fakeSurveyData();
+      const data = fakeSurveyData();
 
-    await sut.add(data);
+      await sut.add(data);
 
-    const survey = await surveyCollection?.findOne({ question: data.question });
+      const survey = await surveyCollection?.findOne({ question: data.question });
 
-    expect(survey).toBeTruthy();
-    expect(survey?.question).toBe(data.question);
-    expect(survey?.answers).toEqual(data.answers);
+      expect(survey).toBeTruthy();
+      expect(survey?.question).toBe(data.question);
+      expect(survey?.answers).toEqual(data.answers);
+    });
+  });
+
+  describe('loadAll()', () => {
+    test('should load all surveys in database', async () => {
+      const sut = makeSut();
+
+      const data = fakeSurveyData();
+
+      await surveyCollection?.insertOne(data);
+
+      const surveys = await sut.loadAll();
+
+      expect(surveys.length).toBe(1);
+      expect(surveys[0].question).toBe(data.question);
+      expect(surveys[0].answers).toEqual(data.answers);
+    });
+
+    test('should load empty list if there are no surveys in database', async () => {
+      const sut = makeSut();
+
+      const surveys = await sut.loadAll();
+
+      expect(surveys.length).toBe(0);
+    });
   });
 });

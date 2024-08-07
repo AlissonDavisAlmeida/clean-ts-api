@@ -18,6 +18,30 @@ const fakeSurveyData = (): AddSurveyParams => ({
   date: new Date()
 });
 
+const fakeSurveysData = (): AddSurveyParams[] => [
+  {
+    question: 'any_question',
+    answers: [
+      {
+        image: 'any_image',
+        answer: 'any_answer'
+      }
+    ],
+    date: new Date()
+  },
+  {
+    question: 'other_question',
+    answers: [
+      {
+        image: 'other_image',
+        answer: 'other_answer'
+      }
+    ],
+    date: new Date()
+  }
+
+];
+
 describe('SurveyMongoDBRepository', () => {
   let surveyCollection: Collection<Document> | undefined;
   beforeAll(async () => {
@@ -53,15 +77,15 @@ describe('SurveyMongoDBRepository', () => {
     test('should load all surveys in database', async () => {
       const sut = makeSut();
 
-      const data = fakeSurveyData();
+      const data = fakeSurveysData();
 
-      await surveyCollection?.insertOne(data);
+      await surveyCollection?.insertMany(data);
 
       const surveys = await sut.loadAll();
 
-      expect(surveys.length).toBe(1);
-      expect(surveys[0].question).toBe(data.question);
-      expect(surveys[0].answers).toEqual(data.answers);
+      expect(surveys.length).toBe(2);
+      expect(surveys[0].question).toBe(data[0].question);
+      expect(surveys[1].question).toBe(data[1].question);
     });
 
     test('should load empty list if there are no surveys in database', async () => {

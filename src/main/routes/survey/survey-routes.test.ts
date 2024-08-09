@@ -67,4 +67,63 @@ describe('Survey routes', () => {
         .expect(204);
     });
   });
+
+  describe('GET /surveys', () => {
+    test('should return 403 on load surveys without access-token', async () => {
+      await request(app).get('/api/surveys').expect(403);
+    });
+
+    test('should return 204 on load surveys with valid access-token and empty list', async () => {
+      const res = await accountCollection?.insertOne({
+        name: 'any_name',
+        email: 'any_mail@com.com',
+        password: 'any_password',
+        role: 'admin'
+      });
+
+      const id = res?.insertedId;
+      const accessToken = jwt.sign({ id }, config.jwtSecret);
+
+      await accountCollection?.updateOne(
+        { _id: id },
+        {
+          $set: {
+            accessToken
+          }
+        }
+      );
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', accessToken)
+        .expect(204);
+    });
+    test('should return 200 on load surveys with valid access-token', async () => {
+      const res = await accountCollection?.insertOne({
+        name: 'any_name',
+        email: 'any_mail@com.com',
+        password: 'any_password',
+        role: 'admin'
+      });
+
+      const id = res?.insertedId;
+      const accessToken = jwt.sign({ id }, config.jwtSecret);
+
+      await accountCollection?.updateOne(
+        { _id: id },
+        {
+          $set: {
+            accessToken
+          }
+        }
+      );
+
+      await surveyCollection?.insertOne(fakeSurveyData());
+
+      await request(app)
+        .get('/api/surveys')
+        .set('x-access-token', accessToken)
+        .expect(200);
+    });
+  });
 });

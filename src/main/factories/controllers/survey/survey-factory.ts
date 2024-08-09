@@ -4,13 +4,24 @@ import { AddSurveyController } from '../../../../presentation/controller/survey/
 import { type Controller } from '../../../../presentation/protocols';
 import { makeSurveyValidatorFactory } from './survey-validator-factory';
 import { AddSurveyUseCase } from '@/@data/usecases/survey/add-survey/add-survey.usecase';
+import { LoadSurveysUseCase } from '@/@data/usecases/survey/load-surveys/load-surveys.usecase';
+import { LoadSurveysController } from '@/presentation/controller/survey/load-survey/load-surveysController';
 
-export const makeSurveyController = (): Controller => {
+export const makeAddSurveyController = (): Controller => {
   const accountMongoRepository = new SurveyMongoRepository();
   const addSurvey = new AddSurveyUseCase(accountMongoRepository);
   const validationComposite = makeSurveyValidatorFactory();
-  const loginController = new AddSurveyController(validationComposite, addSurvey);
+  const addSurveyController = new AddSurveyController(validationComposite, addSurvey);
   const logMongoRepository = new LogMongoRepository();
-  const logControllerDecorator = new LogControllerDecorator(loginController, logMongoRepository);
+  const logControllerDecorator = new LogControllerDecorator(addSurveyController, logMongoRepository);
+  return logControllerDecorator;
+};
+
+export const makeLoadSurveysController = (): Controller => {
+  const surveyMongoRepository = new SurveyMongoRepository();
+  const loadSurveys = new LoadSurveysUseCase(surveyMongoRepository);
+  const loadSurveysController = new LoadSurveysController(loadSurveys);
+  const logMongoRepository = new LogMongoRepository();
+  const logControllerDecorator = new LogControllerDecorator(loadSurveysController, logMongoRepository);
   return logControllerDecorator;
 };

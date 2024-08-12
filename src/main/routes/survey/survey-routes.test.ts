@@ -103,7 +103,7 @@ describe('Survey routes', () => {
         name: 'any_name',
         email: 'any_mail@com.com',
         password: 'any_password',
-        role: 'admin'
+        role: ''
       });
 
       const id = res?.insertedId;

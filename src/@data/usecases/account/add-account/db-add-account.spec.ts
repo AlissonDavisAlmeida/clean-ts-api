@@ -86,7 +86,8 @@ describe('DbAddAccount Usecase', () => {
 
     expect(addSpy).toHaveBeenCalledWith({
       ...accountData,
-      password: 'hashed_password'
+      password: 'hashed_password',
+      role: ''
     });
   });
 

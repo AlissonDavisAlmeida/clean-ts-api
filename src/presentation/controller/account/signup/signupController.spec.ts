@@ -8,7 +8,8 @@ import {
   type AddAccountModel,
   type HttpRequest,
   type Validation,
-  type AuthenticationParams
+  type AuthenticationParams,
+  type AuthenticationResult
 } from './signup.protocols';
 
 interface SutTypes {
@@ -32,8 +33,8 @@ const makeAddAccount = (): AddAccount => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth ({ email, password }: AuthenticationParams): Promise<string> {
-      return await new Promise(resolve => { resolve('any_token'); });
+    async auth ({ email, password }: AuthenticationParams): Promise<AuthenticationResult> {
+      return await new Promise(resolve => { resolve({ token: 'any_token', name: 'any_name' }); });
     }
   }
 
@@ -152,7 +153,7 @@ describe('Signup Controller', () => {
     const httpRequest = makeFakeRequest();
     const httpResponse = await sut.handle(httpRequest);
 
-    expect(httpResponse).toEqual(ok('any_token'));
+    expect(httpResponse).toEqual(ok({ token: 'any_token', name: 'any_name' }));
   });
 
   test('should call Validation with correct value', async () => {

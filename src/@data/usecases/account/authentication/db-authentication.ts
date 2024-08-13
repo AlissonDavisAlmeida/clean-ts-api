@@ -1,5 +1,5 @@
 import { type LoadAccountByEmailRepository, type HashComparer, type Encrypter, type UpdateAccessTokenRepository } from './db-authentication-protocols';
-import { type AuthenticationParams, type Authentication } from '@/@domain/useCases/account/authentication';
+import { type AuthenticationParams, type Authentication, type AuthenticationResult } from '@/@domain/useCases/account/authentication';
 
 export class DbAuthentication implements Authentication {
   constructor (
@@ -8,7 +8,7 @@ export class DbAuthentication implements Authentication {
     private readonly encrypter: Encrypter
   ) { }
 
-  async auth (authenticationParams: AuthenticationParams): Promise<string | null> {
+  async auth (authenticationParams: AuthenticationParams): Promise<AuthenticationResult | null> {
     const account = await this.accountRepository.loadByEmail(authenticationParams.email);
 
     if (!account) {
@@ -31,6 +31,9 @@ export class DbAuthentication implements Authentication {
       accessToken: token
     });
 
-    return token;
+    return {
+      token,
+      name: account.name
+    };
   }
 }

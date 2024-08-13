@@ -32,9 +32,9 @@ export class SignupController implements Controller {
         password
       });
 
-      const accessToken = await this.authentication.auth({ email: account.email, password: account.password });
+      const authenticationResult = await this.authentication.auth({ email: account.email, password: account.password });
 
-      return ok(accessToken);
+      return ok(authenticationResult);
     } catch (error: any) {
       if (error instanceof AccountAlreadyExistsError) {
         return accountAlreadyExists(error);

@@ -4,6 +4,11 @@ export interface AuthenticationParams {
 
 }
 
+export type AuthenticationResult = {
+  token: string
+  name: string
+}
+
 export interface Authentication {
-  auth: (params: AuthenticationParams) => Promise<string | null>
+  auth: (params: AuthenticationParams) => Promise<AuthenticationResult | null>
 }

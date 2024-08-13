@@ -1,4 +1,4 @@
-import { type Authentication, type AuthenticationParams } from '@/@domain/useCases/account/authentication';
+import { type AuthenticationResult, type Authentication, type AuthenticationParams } from '@/@domain/useCases/account/authentication';
 import { MissingParamError } from '@/presentation/errors';
 import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/httpHelper';
 import { type Validation, type HttpRequest } from '@/presentation/protocols';
@@ -19,8 +19,11 @@ const httpRequest: HttpRequest = {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    async auth (authentication: AuthenticationParams): Promise<string> {
-      return 'any_token';
+    async auth (authentication: AuthenticationParams): Promise<AuthenticationResult> {
+      return {
+        token: 'any_token',
+        name: 'any_name'
+      };
     }
   }
 
@@ -71,7 +74,7 @@ describe('Login Controller', () => {
   test('should returns 401 if invalid credentials are provided', async () => {
     const { sut, authenticationStub } = makeSut();
 
-    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => { resolve(''); }));
+    jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(new Promise(resolve => { resolve({ token: '', name: '' }); }));
 
     const httpResult = await sut.handle(httpRequest);
 
@@ -95,7 +98,7 @@ describe('Login Controller', () => {
 
     const httpResult = await sut.handle(httpRequest);
 
-    expect(httpResult).toStrictEqual(ok({ accessToken: 'any_token' }));
+    expect(httpResult).toStrictEqual(ok({ token: 'any_token', name: 'any_name' }));
   });
 
   test('should call Validation with correct value', async () => {

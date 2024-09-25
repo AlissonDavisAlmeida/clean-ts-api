@@ -13,7 +13,6 @@ const makeEmailValidator = (): EmailValidator => {
       return true;
     }
   }
-  console.log(new EmailValidatorStub());
   return new EmailValidatorStub();
 };
 describe('SignupValidator Factory', () => {
